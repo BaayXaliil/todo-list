@@ -18,6 +18,15 @@ type ViewFilter = 'all' | 'priority' | 'today' | 'completed';
 export class TodoListComponent implements OnInit {
   readonly priorities = Object.values(Priority);
   readonly labels = Object.values(Label);
+  
+  // French translations for export
+  private readonly translations = {
+    noDescription: 'Aucune description fournie.',
+    noAssignee: 'Sans responsable',
+    defaultPriority: 'Moyen',
+    noLabel: 'Aucune étiquette',
+    notDefined: 'Non définie'
+  };
 
   viewFilter: ViewFilter = 'all';
   searchTerm = '';
@@ -253,12 +262,12 @@ export class TodoListComponent implements OnInit {
   exportToExcel(): void {
     const dataToExport = this.filteredTodos.map(todo => ({
       'Titre': todo.titre,
-      'Description': todo.description || 'Aucune description fournie.',
-      'Responsable': todo.person?.name || 'Sans responsable',
-      'Priorité': todo.priority || 'Moyen',
-      'Étiquettes': (todo.labels || []).join(', ') || 'Aucune étiquette',
-      'Date de début': todo.startDate ? new Date(todo.startDate).toLocaleDateString('fr-FR') : 'Non définie',
-      'Date de fin': todo.endDate ? new Date(todo.endDate).toLocaleDateString('fr-FR') : 'Non définie'
+      'Description': todo.description || this.translations.noDescription,
+      'Responsable': todo.person?.name || this.translations.noAssignee,
+      'Priorité': todo.priority || this.translations.defaultPriority,
+      'Étiquettes': (todo.labels || []).join(', ') || this.translations.noLabel,
+      'Date de début': todo.startDate ? new Date(todo.startDate).toLocaleDateString('fr-FR') : this.translations.notDefined,
+      'Date de fin': todo.endDate ? new Date(todo.endDate).toLocaleDateString('fr-FR') : this.translations.notDefined
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
@@ -275,11 +284,11 @@ export class TodoListComponent implements OnInit {
     
     const tableData = this.filteredTodos.map(todo => [
       todo.titre,
-      todo.description || 'Aucune description fournie.',
-      todo.person?.name || 'Sans responsable',
-      todo.priority || 'Moyen',
-      (todo.labels || []).join(', ') || 'Aucune étiquette',
-      todo.startDate ? new Date(todo.startDate).toLocaleDateString('fr-FR') : 'Non définie'
+      todo.description || this.translations.noDescription,
+      todo.person?.name || this.translations.noAssignee,
+      todo.priority || this.translations.defaultPriority,
+      (todo.labels || []).join(', ') || this.translations.noLabel,
+      todo.startDate ? new Date(todo.startDate).toLocaleDateString('fr-FR') : this.translations.notDefined
     ]);
 
     autoTable(doc, {
