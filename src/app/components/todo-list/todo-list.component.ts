@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../../services/api.service';
 import { Todo, Priority, Label } from '../../models/todo.model';
 import { TodoModalComponent } from '../todo-modal/todo-modal.component';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 type ViewFilter = 'all' | 'priority' | 'today' | 'completed';
 
@@ -156,10 +159,10 @@ export class TodoListComponent implements OnInit {
 
   getScheduleLabel(todo: Todo): string {
     if (!todo.startDate) {
-      return 'Schedule not set';
+      return 'Échéance non définie';
     }
     const date = new Date(todo.startDate);
-    return `Schedule for ${date.toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' })}`;
+    return `Échéance pour le ${date.toLocaleDateString('fr-FR', { month: 'short', day: '2-digit', year: 'numeric' })}`;
   }
 
   getInitials(todo: Todo): string {
@@ -245,5 +248,56 @@ export class TodoListComponent implements OnInit {
     this.page = Math.min(this.page, totalPages);
     const start = (this.page - 1) * this.perPage;
     this.pagedTodos = this.filteredTodos.slice(start, start + this.perPage);
+  }
+
+  exportToExcel(): void {
+    const dataToExport = this.filteredTodos.map(todo => ({
+      'Titre': todo.titre,
+      'Description': todo.description || 'Aucune description fournie.',
+      'Responsable': todo.person?.name || 'Sans responsable',
+      'Priorité': todo.priority || 'Moyen',
+      'Étiquettes': (todo.labels || []).join(', ') || 'Aucune étiquette',
+      'Date de début': todo.startDate ? new Date(todo.startDate).toLocaleDateString('fr-FR') : 'Non définie',
+      'Date de fin': todo.endDate ? new Date(todo.endDate).toLocaleDateString('fr-FR') : 'Non définie'
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Tâches');
+    XLSX.writeFile(workbook, 'liste-des-taches.xlsx');
+  }
+
+  exportToPdf(): void {
+    const doc = new jsPDF();
+    
+    doc.setFontSize(18);
+    doc.text('Liste des Tâches', 14, 20);
+    
+    const tableData = this.filteredTodos.map(todo => [
+      todo.titre,
+      todo.description || 'Aucune description fournie.',
+      todo.person?.name || 'Sans responsable',
+      todo.priority || 'Moyen',
+      (todo.labels || []).join(', ') || 'Aucune étiquette',
+      todo.startDate ? new Date(todo.startDate).toLocaleDateString('fr-FR') : 'Non définie'
+    ]);
+
+    autoTable(doc, {
+      head: [['Titre', 'Description', 'Responsable', 'Priorité', 'Étiquettes', 'Date de début']],
+      body: tableData,
+      startY: 30,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [99, 102, 241] },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 20 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 25 }
+      }
+    });
+
+    doc.save('liste-des-taches.pdf');
   }
 }
