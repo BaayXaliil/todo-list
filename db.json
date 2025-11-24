@@ -23,14 +23,275 @@
         "email": "dioptrie7@gmail.com",
         "phone": "221-777536172"
       },
-      "startDate": "2025-11-23T00:00:00.000Z",
-      "endDate": "2025-11-28T00:00:00.000Z",
+      "startDate": "2025-11-23T08:00:00.000Z",
       "priority": "Moyen",
       "labels": [
         "HTML",
         "CSS"
       ],
-      "description": "Vérifier toutes les pièces"
+      "description": "Verifier toutes les pieces",
+      "terminee": false
+    },
+    {
+      "id": "2",
+      "titre": "Planifier la reunion client",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-11-25T09:30:00.000Z",
+      "priority": "Difficile",
+      "labels": [
+        "NODE JS",
+        "JQUERY"
+      ],
+      "description": "Envoyer l ordre du jour et reserver la salle.",
+      "terminee": false
+    },
+    {
+      "id": "3",
+      "titre": "Preparer les maquettes UI",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-11-26T07:45:00.000Z",
+      "priority": "Moyen",
+      "labels": [
+        "CSS"
+      ],
+      "description": "Produire trois variations de la page d accueil.",
+      "terminee": false
+    },
+    {
+      "id": "4",
+      "titre": "Tester les formulaires",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-11-27T10:15:00.000Z",
+      "priority": "Facile",
+      "labels": [
+        "HTML",
+        "CSS"
+      ],
+      "description": "Verifier les scenarios de soumission et d erreurs.",
+      "terminee": false
+    },
+    {
+      "id": "5",
+      "titre": "Mettre a jour la documentation API",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-11-28T11:00:00.000Z",
+      "priority": "Moyen",
+      "labels": [
+        "NODE JS"
+      ],
+      "description": "Decrire les nouveaux endpoints et exemples JSON.",
+      "terminee": false
+    },
+    {
+      "id": "6",
+      "titre": "Former l equipe support",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-11-29T14:00:00.000Z",
+      "priority": "Difficile",
+      "labels": [
+        "JQUERY",
+        "NODE JS"
+      ],
+      "description": "Session de trois heures avec exercices pratiques.",
+      "terminee": false
+    },
+    {
+      "id": "7",
+      "titre": "Configurer la surveillance",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-11-30T06:30:00.000Z",
+      "priority": "Moyen",
+      "labels": [
+        "NODE JS"
+      ],
+      "description": "Installer les alertes et dashboards Grafana.",
+      "terminee": true
+    },
+    {
+      "id": "8",
+      "titre": "Verifier les traductions",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-12-01T09:00:00.000Z",
+      "priority": "Facile",
+      "labels": [
+        "HTML"
+      ],
+      "description": "Relire la version francaise du portail.",
+      "terminee": true
+    },
+    {
+      "id": "9",
+      "titre": "Auditer la performance",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-12-02T08:45:00.000Z",
+      "priority": "Difficile",
+      "labels": [
+        "CSS",
+        "NODE JS"
+      ],
+      "description": "Analyser le temps de chargement et optimiser.",
+      "terminee": false
+    },
+    {
+      "id": "10",
+      "titre": "Nettoyer la base de donnees",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-12-03T07:15:00.000Z",
+      "priority": "Moyen",
+      "labels": [
+        "NODE JS"
+      ],
+      "description": "Supprimer les enregistrements obsoletes.",
+      "terminee": false
+    },
+    {
+      "id": "11",
+      "titre": "Verifier la securite des comptes",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-12-04T10:00:00.000Z",
+      "priority": "Difficile",
+      "labels": [
+        "NODE JS"
+      ],
+      "description": "Reinitialiser les comptes inactifs.",
+      "terminee": false
+    },
+    {
+      "id": "12",
+      "titre": "Mettre a jour le tableau de bord",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-12-05T13:30:00.000Z",
+      "priority": "Facile",
+      "labels": [
+        "CSS",
+        "HTML"
+      ],
+      "description": "Ajouter les nouvelles cartes de suivi.",
+      "terminee": true
+    },
+    {
+      "id": "13",
+      "titre": "Revoir le backlog",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-12-06T08:20:00.000Z",
+      "priority": "Facile",
+      "labels": [
+        "HTML"
+      ],
+      "description": "Prioriser les user stories restantes.",
+      "terminee": true
+    },
+    {
+      "id": "14",
+      "titre": "Completer le rapport mensuel",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-12-07T09:40:00.000Z",
+      "priority": "Moyen",
+      "labels": [
+        "JQUERY"
+      ],
+      "description": "Consolider les chiffres du trimestre.",
+      "terminee": false
+    },
+    {
+      "id": "15",
+      "titre": "Automatiser les tests e2e",
+      "person": {
+        "id": 1,
+        "name": "Ibrahima Diop",
+        "email": "dioptrie7@gmail.com",
+        "phone": "221-777536172"
+      },
+      "startDate": "2025-12-08T07:00:00.000Z",
+      "priority": "Difficile",
+      "labels": [
+        "NODE JS",
+        "JQUERY"
+      ],
+      "description": "Ecrire les scenarios critiques avec Playwright.",
+      "terminee": false
+    },
+    {
+      "id": "16",
+      "titre": "Verifier la campagne emailing",
+      "person": {
+        "id": 2,
+        "name": "Moussa Fall",
+        "email": "fallmoussa@gmail.com",
+        "phone": "221-766543212"
+      },
+      "startDate": "2025-12-09T11:10:00.000Z",
+      "priority": "Facile",
+      "labels": [
+        "HTML"
+      ],
+      "description": "Tester les liens et le responsive.",
+      "terminee": true
     }
   ]
 }
