@@ -16,10 +16,10 @@ export enum Label {
 export interface Todo {
     id?: number;
     titre: string;
-    person: Person;
+    person?: Person;
     startDate: string; // ISO date string
     endDate?: string;  // ISO date string
     priority: Priority;
-    labels: Label[];
+    labels?: Label[];
     description?: string;
 }

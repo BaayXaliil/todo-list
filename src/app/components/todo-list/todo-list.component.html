@@ -1,1 +1,137 @@
-<p>todo-list works!</p>
+<div class="layout">
+    <aside class="sidebar">
+        <button mat-flat-button color="primary" class="add-task" (click)="onAdd()">
+            <mat-icon>add</mat-icon>
+            <span>Add New Task</span>
+        </button>
+
+        <nav class="sidebar-nav">
+            <button type="button" (click)="setViewFilter('all')" [class.active]="viewFilter === 'all'">
+                <mat-icon>list_alt</mat-icon>
+                <span>All</span>
+            </button>
+            <button type="button" (click)="setViewFilter('priority')" [class.active]="viewFilter === 'priority'">
+                <mat-icon>flag</mat-icon>
+                <span>Priority</span>
+            </button>
+            <button type="button" (click)="setViewFilter('today')" [class.active]="viewFilter === 'today'">
+                <mat-icon>today</mat-icon>
+                <span>Today</span>
+            </button>
+            <button type="button" (click)="setViewFilter('completed')" [class.active]="viewFilter === 'completed'">
+                <mat-icon>task_alt</mat-icon>
+                <span>Completed</span>
+            </button>
+        </nav>
+
+        <div class="labels-section">
+            <h3>Labels</h3>
+            <button type="button"
+                *ngFor="let label of labels"
+                (click)="setLabelFilter(label)"
+                [class.active]="labelFilter === label">
+                <span class="dot" [style.backgroundColor]="getLabelColor(label)"></span>
+                {{ label }}
+            </button>
+        </div>
+    </aside>
+
+    <section class="content">
+        <header class="content-header">
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput placeholder="Search here" [value]="searchTerm" (input)="setSearchTerm($any($event.target).value)">
+            </mat-form-field>
+
+            <div class="header-actions">
+                <mat-form-field appearance="outline" class="priority-filter">
+                    <mat-label>Priority</mat-label>
+                    <mat-select [value]="priorityFilter" (selectionChange)="setPriorityFilter($event.value || '')">
+                        <mat-option value="">None</mat-option>
+                        <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-stroked-button type="button" (click)="resetFilters()">
+                    <mat-icon>refresh</mat-icon>
+                    Reset
+                </button>
+            </div>
+        </header>
+
+        <div class="list-card">
+            <div class="list-meta">
+                <span class="page-info">{{ pageSummary }}</span>
+                <div class="paginator">
+                    <button mat-icon-button (click)="previousPage()" [disabled]="page === 1">
+                        <mat-icon>chevron_left</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="nextPage()" [disabled]="page * perPage >= total">
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="list-header">
+                <mat-checkbox></mat-checkbox>
+                <span class="col-avatar"></span>
+                <span class="col-task">Task</span>
+                <span class="col-person">Assignee</span>
+                <span class="col-priority">Priority</span>
+                <span class="col-labels">Labels</span>
+                <span class="col-schedule">Schedule</span>
+                <span class="col-actions"></span>
+            </div>
+
+            <ng-template #loadingTpl>
+                <div class="loading">Loading…</div>
+            </ng-template>
+
+            <ng-container *ngIf="!isLoading; else loadingTpl">
+                <div class="list-rows" *ngIf="pagedTodos.length; else emptyTpl">
+                    <div class="list-row" *ngFor="let todo of pagedTodos; trackBy: trackByTodo">
+                        <mat-checkbox></mat-checkbox>
+                        <div class="avatar" [style.backgroundColor]="getAvatarColor(todo)">{{ getInitials(todo) }}</div>
+                        <div class="task">
+                            <div class="task-title">{{ todo.titre }}</div>
+                            <div class="task-sub">{{ todo.description || 'Aucune description fournie.' }}</div>
+                        </div>
+                        <div class="person">{{ todo.person?.name || 'Sans responsable' }}</div>
+                        <div class="priority">
+                            <span class="priority-pill" [ngClass]="priorityClass(todo.priority)">{{ todo.priority }}</span>
+                        </div>
+                        <div class="labels">
+                            <ng-container *ngIf="todo.labels?.length; else noLabel">
+                                <span class="label-pill"
+                                    *ngFor="let label of todo.labels || []"
+                                    [style.borderColor]="getLabelColor(label)"
+                                    [style.color]="getLabelColor(label)">
+                                    <span class="dot" [style.backgroundColor]="getLabelColor(label)"></span>
+                                    {{ label }}
+                                </span>
+                            </ng-container>
+                            <ng-template #noLabel>
+                                <span class="no-label">No label</span>
+                            </ng-template>
+                        </div>
+                        <div class="schedule" [class.completed]="isCompleted(todo)">{{ getScheduleLabel(todo) }}</div>
+                        <div class="row-actions">
+                            <button mat-icon-button (click)="onEdit(todo)" aria-label="Modifier">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="onDelete(todo)" aria-label="Supprimer">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </section>
+</div>
+
+<ng-template #emptyTpl>
+    <div class="empty-state">
+        <p>Aucune tâche ne correspond aux filtres.</p>
+    </div>
+</ng-template>

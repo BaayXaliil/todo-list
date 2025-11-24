@@ -1,0 +1,19 @@
+.todo-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.row mat-form-field {
+	flex: 1 1 15rem;
+}
+
+.full-width {
+	width: 100%;
+}
