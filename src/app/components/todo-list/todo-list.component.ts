@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../../services/api.service';
 import { Todo, Priority, Label } from '../../models/todo.model';
 import { TodoModalComponent } from '../todo-modal/todo-modal.component';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 type ViewFilter = 'all' | 'priority' | 'today' | 'completed';
 
@@ -56,7 +59,7 @@ export class TodoListComponent implements OnInit {
   }
 
   onDelete(row: Todo): void {
-    if (confirm('Supprimer cette tâche ?')) {
+    if (confirm('Supprimer cette tache ?')) {
       this.api.deleteTodo(row.id!).subscribe(() => this.loadTodos());
     }
   }
@@ -147,19 +150,54 @@ export class TodoListComponent implements OnInit {
 
   get pageSummary(): string {
     if (!this.total) {
-      return '0 of 0';
+      return '0 sur 0';
     }
     const start = (this.page - 1) * this.perPage + 1;
     const end = Math.min(this.page * this.perPage, this.total);
-    return `${start}-${end} of ${this.total}`;
+    return `${start}-${end} sur ${this.total}`;
   }
 
   getScheduleLabel(todo: Todo): string {
     if (!todo.startDate) {
-      return 'Schedule not set';
+      return 'Aucune date planifiee';
     }
     const date = new Date(todo.startDate);
-    return `Schedule for ${date.toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' })}`;
+    return `Planifiee pour ${date.toLocaleDateString('fr-FR', { month: 'short', day: '2-digit', year: 'numeric' })}`;
+  }
+
+  exportToExcel(): void {
+    const rows = this.buildExportRows();
+    if (!rows.length) {
+      return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Taches');
+    XLSX.writeFile(workbook, 'taches.xlsx');
+  }
+
+  exportToPdf(): void {
+    const rows = this.buildExportRows();
+    if (!rows.length) {
+      return;
+    }
+
+    const doc = new jsPDF({ orientation: 'landscape' });
+    autoTable(doc, {
+      head: [['Tache', 'Responsable', 'Priorite', 'Etiquettes', 'Debut', 'Fin', 'Description']],
+      body: rows.map(row => [
+        row['Tache'],
+        row['Responsable'],
+        row['Priorite'],
+        row['Etiquettes'],
+        row['Debut'],
+        row['Fin'],
+        row['Description']
+      ]),
+      styles: { fontSize: 9, cellPadding: 3 }
+    });
+    doc.save('taches.pdf');
   }
 
   getInitials(todo: Todo): string {
@@ -245,5 +283,28 @@ export class TodoListComponent implements OnInit {
     this.page = Math.min(this.page, totalPages);
     const start = (this.page - 1) * this.perPage;
     this.pagedTodos = this.filteredTodos.slice(start, start + this.perPage);
+  }
+
+  private buildExportRows(): Array<Record<string, string>> {
+    return this.filteredTodos.map(todo => ({
+      'Tache': todo.titre,
+      'Responsable': todo.person?.name ?? 'Sans responsable',
+      'Priorite': todo.priority ?? '',
+      'Etiquettes': (todo.labels ?? []).join(', '),
+      'Debut': this.formatDateForExport(todo.startDate),
+      'Fin': this.formatDateForExport(todo.endDate),
+      'Description': todo.description ?? ''
+    }));
+  }
+
+  private formatDateForExport(value?: string): string {
+    if (!value) {
+      return '';
+    }
+    const date = new Date(value);
+    if (isNaN(date.getTime())) {
+      return '';
+    }
+    return date.toLocaleDateString('fr-FR');
   }
 }
