@@ -1,0 +1,36 @@
+{
+    "persons": [
+        {
+            "id": 1,
+            "name": "Ibrahima Diop",
+            "email": "dioptrie7@gmail.com",
+            "phone": "221-777536172"
+        },
+        {
+            "id": 2,
+            "name": "Moussa Fall",
+            "email": "fallmoussa@gmail.com",
+            "phone": "221-766543212"
+        }
+    ],
+    "todos": [
+        {
+            "id": 1,
+            "titre": "Check the documents of audit",
+            "person": {
+                "id": 1,
+                "name": "Adam Smith",
+                "email": "adam@example.com",
+                "phone": "221-771234567"
+            },
+            "startDate": "2024-04-29T00:00:00.000Z",
+            "endDate": "2024-04-30T00:00:00.000Z",
+            "priority": "Moyen",
+            "labels": [
+                "HTML",
+                "CSS"
+            ],
+            "description": "Vérifier toutes les pièces"
+        }
+    ]
+}
